@@ -23,12 +23,24 @@ int * creationMatriceH( const int nbUtilisateurs ){
 
 /* Initialisation de la matrice de Hadamard */
 int * etalementH( int * matriceH, const int nbUtilisateurs ){
-  int i, j;
-
-	for( i = 0 ; i < nbUtilisateurs ; i++ )
-		for( j = 0 ; j < nbUtilisateurs; j++ )
-			matriceH[i + j*nbUtilisateurs] = 1;  
+  int i, j, k;
   
+  matriceH[0] = 1;
+  
+  
+  
+  
+  
+  
+  
+  
+	/*for( i = 1 ; i <= nbUtilisateurs/2 ; i++ )
+		for( j = 0 ; j < nbUtilisateurs ; j++ ){
+		  for( k = 0 ; k < nbUtilisateurs ; k++ ){
+			  matriceH[i + j*nbUtilisateurs] = matrice[i-1 + j * nbUtilisateurs];
+   		}
+		}
+  }*/
   return matriceH;
 }
 
