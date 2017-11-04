@@ -1,6 +1,8 @@
 #include "emetteur.h"
 
-/* Demande un nombre d'utilisateurs qui est soit 1 soit 2 ou un multiple de 4 */
+/* Demande un nombre d'utilisateurs qui est soit 1 soit 2 ou un multiple de 4 
+ * @param : void
+ */
 int choixNbUtilisateurs( void ){
   int nb = 1;
   do{
@@ -14,14 +16,23 @@ int choixNbUtilisateurs( void ){
   return nb;
 }
 
-/* Creation de la matrice de Hadamard en fonction du nombre d'utilisateurs */
+
+/* Creation de la matrice de Hadamard en fonction du nombre d'utilisateurs 
+ * @param :
+ * 	const int nbUtilisateurs : le nombre d'utilisateurs
+ */
 int * creationMatriceH( const int nbUtilisateurs ){
-  int * matriceH = malloc(sizeof( int )* nbUtilisateurs );
+  int * matriceH = malloc(sizeof( int )* nbUtilisateurs *nbUtilisateurs );
   
   return matriceH;
 }
 
-/* Initialisation de la matrice de Hadamard */
+
+/* Permet d'initialiser de la matrice de Hadamard
+ * @param : 
+ * 	int * matriceH : la matrice d'Hadamard
+ * 	const int nbUtilisateurs : le nombre d'utilisateurs
+ */
 void etalementH( int * matriceH, const int nbUtilisateurs ){
   int i, j, k, pred;
   pred = 1;
@@ -44,8 +55,12 @@ void etalementH( int * matriceH, const int nbUtilisateurs ){
 }
 
 
-/* Affichage matrice */
-void affichageMatriceH( int * matriceH, const int nbUtilisateurs ){
+/* Fonction permettant d'afficher la matrice de Hadamard
+ * @param :
+ * 	const int * matriceH : la matrice de Hadamard
+ * 	const int nbUtilisateurs : le nombre d'utilisateurs
+ */
+void affichageMatriceH( const int * matriceH, const int nbUtilisateurs ){
 	int i, j;
 
 	printf("\nMatriceH:\n");
@@ -78,11 +93,18 @@ int * saisirMessage( const int nbUtilisateurs, const int len){
 		for(j = 0; j < len; j++){
 			printf("Bit %i : ",j);
 			scanf("%i", &valeur);
-			message[j + i * nbUtilisateurs] = valeur;
+			if(valeur == 0){
+				valeur = -1;
+			}
+			else{
+				valeur = 1;
+			}
+			message[j + i * len] = valeur;
 		}
 	}
 	return message;
 }
+
 
 /* Retourne la trame message qui va etre envoye dans le canal
  * @param : 
@@ -93,7 +115,7 @@ int * saisirMessage( const int nbUtilisateurs, const int len){
  */
 int * messageAEnvoyer(const int * matriceH, const int * message, const int nbUtilisateurs, const int len ){
   
-  int i, j, k;
+  int i, j, k, l;
   int valeur;
 
   /* On sait que le message retour contient des chips de longueurs nbUtilisateurs
@@ -105,28 +127,44 @@ int * messageAEnvoyer(const int * matriceH, const int * message, const int nbUti
     exit(1);
   }
   else{
+		/* On initialise la trame */
+		for(i = 0; i < nbUtilisateurs * len; i++){
+			messageRetour[i] = 0;
+		}
     /* on repete la boucle pour tout les utilisateurs */
     for(i = 0; i < nbUtilisateurs; i++){
-    
+    	//printf("Utilisateur %i\n",i);
       /* on repete la boucle pour chaque caractere du message */
       for( j = 0; j < len; j++){
-     		
+     		//printf("valeur bit %i\n",message[j + i * nbUtilisateurs]);
         /* On parcours la sequence d'etalement de l'utilisateur specifie */
         for(k = 0; k < nbUtilisateurs; k++){
-	
+					//printf("valeur d'etalement %i\n",matriceH[k + i * nbUtilisateurs]);
           /* messageRetour[j*k] permet de pointer vers le chip numero j et d'indice k */
-					messageRetour[j * k] += message[j + i* nbUtilisateurs] * matriceH[k + i * nbUtilisateurs];
+					messageRetour[j * len + k] += message[j + i * len] * matriceH[k + i * nbUtilisateurs];
+					//printf("index : %i, res combinatoire : %i\n",j * len + k, messageRetour[j + k * len]);
 				}
 			}
 		}
 	}
+	return messageRetour;
 }
 
+
+/* Permet d'envoyer le message via le canal. Ici le canal est represente par un fichier
+ * @param : 
+ * 	const int * message : le message a transmettre dans le canal
+ * 	const int nbUtilisateurs : le nombre d'utilisateurs
+ * 	const int len : la taille du train de bit des utilisateurs (la meme pour tous les utilisateurs)
+ */
 void envoyerMessage( const int * message, const int nbUtilisateurs, const int len ){
 	int i;
   FILE * fichier = NULL;
 
+	/* On utilise un fichier pour representer le canal */
 	fichier = fopen("trame.data","w");
+
+	/* On envoi la trame bit par bit */
 	for(i = 0; i < nbUtilisateurs * len ; i++){
 		fprintf(fichier, "%i ",message[i]);
 	}

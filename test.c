@@ -25,6 +25,8 @@ int main(){
 	/* Creation du message */
 	trame = messageAEnvoyer(matriceH, message, nb, len);
 
+	/* Envoi du message */
+	envoyerMessage( trame, nb, len );
 
 	free(trame);
 	trame = NULL;

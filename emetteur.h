@@ -8,7 +8,7 @@ int * creationMatriceH( const int nbUtilisateurs );
 
 void etalementH (int * matriceH, const int nbUtilisateurs );
 
-void affichageMatriceH( int * matriceH, const int nbUtilisateurs );
+void affichageMatriceH( const int * matriceH, const int nbUtilisateurs );
 
 int * saisirMessage( const int nbUtilisateurs, const int len);
 

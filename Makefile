@@ -7,20 +7,20 @@
 #-------------
 
 test : test.o emetteur.o recepteur.o
-	gcc test.o emetteur.o recepteur.o -o test.exe
+	gcc -Wall -ansi -g -D_DEBUG_ test.o emetteur.o recepteur.o -o test.exe
 
 test.o : test.c
-	gcc -c test.c -o test.o
+	gcc -g -c test.c -o test.o
   
 #----------
 # Modules
 #----------
 
 emetteur.o : emetteur.c emetteur.h
-	gcc -c emetteur.c -o emetteur.o
+	gcc -g -c emetteur.c -o emetteur.o
 
 recepteur.o : recepteur.c recepteur.h
-	gcc -c recepteur.c -o recepteur.o
+	gcc -g -c recepteur.c -o recepteur.o
 
 
 
