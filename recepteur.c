@@ -1,38 +1,67 @@
-/* Retourne la trame message qui va etre envoye dans le canal
- * @param : 
- *   const int * matriceH : Sequence d'etalement 
- *   const int message * : tableau de longueur nbUtilisateurs  contenant un message dans chacunes de ses cases 
- *   const int nbUtilisateurs : le nombre d'utilisateurs
+#include "recepteur.h"
+
+
+/* Permet de lire la trame recu
+ * const int nbUtilisateurs : le nombre d'utilisateurs
+ * const int len : le nombre de bit(s) envoyé
  */
-int * messageAEnvoyer(const int * matriceH, const int * message, const int nbUtilisateurs ){
-  
-  int i;
-  int valeur = message[i][0];
-  int chips[nbUtilisateurs];
-  /* On sait que le message retour contient des chips de longueurs nbUtilisateurs
-     Et qu'il y a autant de chips que la longueur du plus grand message */
-  int * messageRetour = NULL;
-  
-  if( ( messageRetour = malloc(sizeof(int) * nbUtilisateurs * plusGrandMessage(message, nbUtilisateurs) ) ) == NULL ){
+int * recevoirMessage(const int nbUtilisateurs, const int len ){
+	int i;
+  FILE * fichier = NULL;
+	int * message;
+
+	fichier = fopen("trame.data","r");
+	if( ( message = malloc(sizeof(int) * nbUtilisateurs * len) ) == NULL ){
     printf("Debordement memoire\n");
     return NULL;
   }
-  else{
-    /* on repete la boucle pour tout les utilisateurs */
-    for(i = 0; i < nbUtilisateurs; i++){
-    
-      /* on repete la boucle pour chaque caractere du message */
-      j = 0
-      while( valeur != 0 ){
-     
-        /* on va chercher la sequence d'etalement de l'utilisateur specifie */
-        for(k = 0; k < nbUtilistateurs; k++){
-          /* messageRetour[j*k] permet de pointer vers le chip numero j et d'indice k */
-          messageRetour[j*k] = (valeur * matriceH[i + k * nbUtilisateurs]) * messageRetour[j*k];
-        }
-      valeur = message[i][j+1];
-      j++;
-      }
-    }  
+	
+	for(i = 0; i < nbUtilisateurs * len ; i++){
+		fscanf(fichier, "%i ",message[i]);
+	}
+	fclose(fichier);
+	return message;
+}
+
+
+int * desetalementMessage( const int * matriceH, const int * message, const int nbUtilisateurs, const int len ){
+
+	int i, j, k;	
+	int * messageDesetale = NULL;
+	int somme = 0;
+
+	if( ( messageDesetale = malloc(sizeof(int) * nbUtilisateurs * len) ) == NULL ){
+    printf("Debordement memoire\n");
+    return NULL;
   }
+
+	for(i = 0; i < nbUtilisateurs; i++){
+		for(j = 0; j < len; j++){
+			somme = 0;
+			for(k = 0; k < nbUtilisateurs; k++){
+				somme += message[k + i * nbUtilisateurs] * matriceH[ k + i * nbUtilisateurs];
+			}	
+			messageDesetale[j + i * nbUtilisateurs] = 1 / nbUtilisateurs * somme;
+		}
+	}
+	return messageDesetale;
+}
+
+/* Affichage matrice */
+void afficheMessageUtilisateur( int * messageDesetale, const int utilisateur, const int len ){
+	int i;
+
+	printf("\nMessage de l'utilisateur %i:\n",utilisateur);
+	for( i = 0 ; i < len; i++ ){
+		printf(" %i \n", messageDesetale[i + utilisateur * len]); 
+	}
+}
+
+/* Affichage matrice */
+void afficheMessageRecu( int * messageDesetale, const int nbUtilisateurs, const int len ){
+	int i;
+
+	for( i = 0 ; i < nbUtilisateurs; i++ ){
+		afficheMessageUtilisateur(messageDesetale, i, len);
+	}
 }

@@ -6,8 +6,8 @@
 # Executables 
 #-------------
 
-test : test.o emetteur.o
-	gcc test.o emetteur.o -o test.exe
+test : test.o emetteur.o recepteur.o
+	gcc test.o emetteur.o recepteur.o -o test.exe
 
 test.o : test.c
 	gcc -c test.c -o test.o
@@ -18,7 +18,12 @@ test.o : test.c
 
 emetteur.o : emetteur.c emetteur.h
 	gcc -c emetteur.c -o emetteur.o
-  
+
+recepteur.o : recepteur.c recepteur.h
+	gcc -c recepteur.c -o recepteur.o
+
+
+
 #----------------------------
 # Gestion generale du projet
 #----------------------------
