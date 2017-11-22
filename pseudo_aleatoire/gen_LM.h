@@ -1,3 +1,6 @@
+#ifndef _GEN_LM_H
+#define _GEN_LM_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -27,3 +30,5 @@ extern lm_t initialiser(void);
 extern int * codeur(lm_t codeur);
 
 extern void print_codeur( lm_t codeur );
+
+#endif

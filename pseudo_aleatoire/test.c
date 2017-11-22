@@ -1,4 +1,5 @@
 #include "gen_LM.h"
+#include "gold.h"
 
 int main(){
 	int i;
@@ -15,6 +16,8 @@ int main(){
 	for( i = 0; i < code.taille; i++){
 		printf("%i ",res[i]);
 	}
+
+	gold_t gold = initialiser_gold();
 
 	printf("\n");		
 }

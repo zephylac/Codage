@@ -6,8 +6,8 @@
 # Executables 
 #-------------
 
-test : test.o gen_LM.o
-	gcc -Wall -g -D_DEBUG_ test.o gen_LM.o -o test.exe -lm
+test : test.o gen_LM.o gold.o
+	gcc -Wall -g -D_DEBUG_ test.o gen_LM.o gold.o -o test.exe -lm
 
 test.o : test.c
 	gcc -g -lm -c test.c -o test.o
@@ -18,6 +18,9 @@ test.o : test.c
 
 gen_LM.o : gen_LM.c gen_LM.h
 	gcc -g -lm -c gen_LM.c -o gen_LM.o
+	
+gold.o : gold.c gold.h
+	gcc -g -lm -c gold.c -o gold.o
 
 #----------------------------
 # Gestion generale du projet
