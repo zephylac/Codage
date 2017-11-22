@@ -2,18 +2,27 @@
 
 extern lm_t initialiser(void){
   lm_t codeur;
-  char temp;
-  int i = 0;
+  int tmp = 0, i = 0;
     
-	printf("\n Saisir la longueur de la sequence a generer: ");
-	scanf("%i", &codeur.taille);
+	printf("\nSaisir la longueur de la sequence a generer: ");
+	scanf("%i", &codeur.taille);	
+
+	printf("Saisir la longueur du registre: ");
+	do{
+		scanf("%i", &codeur.registre.taille);
+	}while( codeur.registre.taille > TAILLE_MAX_REGISTRE );
 	
-	if( ( codeur.registre = malloc( sizeof(int) * codeur.taille ) ) == NULL ){
+	if( ( codeur.registre.tab = malloc( sizeof(int) * codeur.registre.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
 	}
 	
-	printf(" Saisir la longueur du poynome de generation: ");
+	printf("Saisir le registre: ");
+	for( i = 0 ; i < codeur.registre.taille ; i++ ){
+		scanf("%i", &codeur.registre.tab[i]);
+	}
+	
+ 	printf("Saisir la longueur du poynome de generation: ");
 	scanf("%i", &codeur.polynome.taille);
 
 	if( ( codeur.polynome.tab = malloc( sizeof(int) * codeur.polynome.taille ) ) == NULL ){
@@ -21,14 +30,10 @@ extern lm_t initialiser(void){
 		exit(1);
 	}
 	
-	printf(" Saisir le polynome de generation: ");
+	printf("Saisir le polynome de generation: ");
 	for( i = 0 ; i < codeur.polynome.taille ; i++ )
 		scanf("%i", &codeur.polynome.tab[i]);
-	
-	printf(" Saisir le registre: ");
-	for( i = 0 ; i < codeur.taille ; i++ )
-		scanf("%i", &codeur.registre[i]);
-	
+
 	return codeur;
 }
 
@@ -49,8 +54,8 @@ extern void print_codeur( lm_t codeur ){
   
   //Affichage du registre
   printf("\nRegistre: ");
-	for( i = 0 ; i < codeur.taille ; i++ )
-		printf("%i ", codeur.registre[i]);
+	for( i = 0 ; i < codeur.registre.taille ; i++ )
+		printf("%i ", codeur.registre.tab[i]);
 } 
 
 
@@ -68,26 +73,26 @@ extern int * codeur(lm_t codeur){
 
 	for(i = 0; i < codeur.taille; i++){
 
-		res[i] = codeur.registre[codeur.taille - 1];
+		res[i] = codeur.registre.tab[codeur.registre.taille - 1];
 		
 		xor_pred = 0;
 		/* On calcule la valeur pour le prochain decalage */
 		for(j = 0; j < codeur.polynome.taille; j++){
-			xor_pred = codeur.registre[codeur.polynome.tab[j] - 1 ] ^ xor_pred;
+			xor_pred = codeur.registre.tab[codeur.polynome.tab[j] - 1 ] ^ xor_pred;
 		}
 		//printf("xor : %i\n",xor_pred);
 	
 		/* sauvegarde du registre precedent */
-		for( j = 0; j < codeur.taille - 1; j++ ){
-			tab_temp[j + 1] = codeur.registre[j];
+		for( j = 0; j < codeur.registre.taille - 1; j++ ){
+			tab_temp[j + 1] = codeur.registre.tab[j];
 		}
 	
 		/*On affecte la nouvelle valeur au registre */
-		codeur.registre[0] = xor_pred;
+		codeur.registre.tab[0] = xor_pred;
 	
 		/* On decale le registre */
-		for(j = 1; j < codeur.taille; j++){
-			codeur.registre[j] = tab_temp[j];
+		for(j = 1; j < codeur.registre.taille; j++){
+			codeur.registre.tab[j] = tab_temp[j];
 		}
 		/*
 		for(j = 0; j < codeur.taille; j++){

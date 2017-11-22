@@ -3,15 +3,22 @@
 #include <ctype.h>
 #include <math.h>
 
+#define TAILLE_MAX_REGISTRE 10
+
 typedef struct polynome_s{
 	int * tab;
 	int taille;
 } polynome_t;
 
+typedef struct registre_s{
+	int taille;
+	int * tab;
+} registre_t;
+
 typedef struct lm_s{
 	int taille;
 	polynome_t polynome;
-	int * registre;
+	registre_t registre;
 } lm_t;
 
 
