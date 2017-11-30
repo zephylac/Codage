@@ -1,5 +1,6 @@
 #include "gen_LM.h"
 #include "gold.h"
+#include "jpl.h"
 
 int main(){
 	int i;
@@ -7,6 +8,7 @@ int main(){
 	
 	lm_t code;
 	gold_t gold;
+	jpl_t jpl;
 
 	int * res;
 	
@@ -50,6 +52,20 @@ int main(){
 			printf("\n");		
 			
 			detruire_gold(gold);
+			free(res);
+			break;
+		case 3:
+			jpl = initialiser_jpl();
+
+			res =	codeur_jpl(jpl);
+		
+			printf("\nResultat: ");
+			for( i = 0; i < jpl.longueur_seq; i++){
+				printf("%i ",res[i]);
+			}
+			printf("\n");		
+			
+			detruire_jpl(jpl);
 			free(res);
 			break;
 	}
