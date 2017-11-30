@@ -4,10 +4,12 @@
 int main(){
 	int i;
 	int choix = 0;
+	
 	lm_t code;
-
 	gold_t gold;
 
+	int * res;
+	
 	while(choix < 1 || choix > 2){
 		printf("Veuiller choisir ce que vous voulez faire :\n");
 		printf("Choix 1 : Code longueur maximale\n");
@@ -24,7 +26,7 @@ int main(){
 
 			print_codeur(code);	
   
-			int * res = codeur(code);
+			res = codeur(code);
 	
 			printf("\nResultat: ");
 			for( i = 0; i < code.taille; i++){
@@ -38,7 +40,17 @@ int main(){
 		
 		case 2:
 			gold = initialiser_gold();
+
+			res =	codeur_gold(gold);
+		
+			printf("\nResultat: ");
+			for( i = 0; i < gold.codeur1.taille; i++){
+				printf("%i ",res[i]);
+			}
+			printf("\n");		
 			
+			detruire_gold(gold);
+			free(res);
 			break;
 	}
 }

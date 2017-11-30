@@ -6,3 +6,8 @@ typedef struct gold_s{
 } gold_t;
 
 extern gold_t initialiser_gold(void);
+
+extern int * codeur_gold(gold_t gold);
+
+extern int detruire_gold(gold_t gold);
+

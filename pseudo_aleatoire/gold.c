@@ -51,7 +51,7 @@ extern gold_t initialiser_gold(void){
 		scanf("%i", &codeur2.registre.taille);
 	}while( codeur2.registre.taille > TAILLE_MAX_REGISTRE );
 	
-	if( ( codeur1.registre.tab = malloc( sizeof(int) * codeur2.registre.taille ) ) == NULL ){
+	if( ( codeur2.registre.tab = malloc( sizeof(int) * codeur2.registre.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
 	}
@@ -78,6 +78,34 @@ extern gold_t initialiser_gold(void){
 	
 	return codeur;
 }
+
+extern int * codeur_gold(gold_t gold){
+
+	int * res, * temp1, * temp2, i;
+
+	if ( (res = malloc(sizeof(int) * gold.codeur1.taille ) ) == NULL ){
+		printf("Debordement memoire\n");
+		exit(1);
+	}
+
+	/* On creer les deux codes de Longueur Maximal saisi par l'utilisateur */
+	temp1 = codeur(gold.codeur1);
+	temp2 = codeur(gold.codeur2);
+
+	for(i = 0; i < gold.codeur1.taille; i++){
+		res[i] = temp1[i] ^ temp2[i];
+	} 
+
+	return  res;
+}
+
+
+extern int detruire_gold(gold_t gold){
+	detruire_lm(gold.codeur1);
+	detruire_lm(gold.codeur2);
+}	
+
+
 
 /*extern void print_codeur_gold( gold_t codeur ){
 	int i, taille_pol, taille;
