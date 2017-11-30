@@ -102,3 +102,9 @@ extern int * codeur(lm_t codeur){
 	}
 	return res;
 }
+
+int detruire_lm(lm_t codeur){
+	free(codeur.registre.tab);
+	free(codeur.polynome.tab);
+	return 0;
+}

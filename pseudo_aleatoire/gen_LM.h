@@ -31,4 +31,5 @@ extern int * codeur(lm_t codeur);
 
 extern void print_codeur( lm_t codeur );
 
+extern int detruire_lm(lm_t codeur);
 #endif
