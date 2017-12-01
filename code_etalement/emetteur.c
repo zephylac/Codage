@@ -161,8 +161,11 @@ void envoyerMessage( const int * message, const int nbUtilisateurs, const int le
 	int i;
   FILE * fichier = NULL;
 
-	/* On utilise un fichier pour representer le canal */
-	fichier = fopen("trame.data","w");
+	/* On utilise un fichier pour representer le canal 
+	 * Le mode W+ tronque le fichier a 0 si il existait deja
+	 * sinon en cree un nouveau 
+	 */
+	fichier = fopen("trame.data","w+");
 
 	/* On envoi la trame bit par bit */
 	for(i = 0; i < nbUtilisateurs * len ; i++){

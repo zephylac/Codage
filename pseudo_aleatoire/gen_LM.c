@@ -33,7 +33,7 @@ extern lm_t initialiser(void){
 		scanf("%i", &codeur.registre.tab[i]);
 	}
 	
- 	printf("Saisir la longueur du poynome de generation: ");
+ 	printf("Saisir la longueur du polynome de generation: ");
 	scanf("%i", &codeur.polynome.taille);
 
 	/* On alloue un espace memoire pour le polynome */

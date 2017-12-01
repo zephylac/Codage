@@ -22,10 +22,6 @@ extern gold_t initialiser_gold(void){
 	scanf("%i", &codeur1.taille);
 	codeur2.taille = codeur1.taille;	
 
-	
-	printf("\tCodeur 1");
-	printf("\n\t========\n");
-	
 	printf("Saisir la longueur du registre: ");
 	do{
 		scanf("%i", &codeur1.registre.taille);
@@ -37,12 +33,23 @@ extern gold_t initialiser_gold(void){
 		exit(1);
 	}
 
+	codeur2.registre.taille = codeur1.registre.taille;	
+
+	/* On alloue un espace memoire pour le registre du deuxieme code LM */
+	if( ( codeur2.registre.tab = malloc( sizeof(int) * codeur2.registre.taille ) ) == NULL ){
+		printf("Debordement memoire\n");
+		exit(1);
+	}
+	
+	printf("\tCodeur 1");
+	printf("\n\t========\n");
+	
 	printf("Saisir le registre: ");
 	for( i = 0 ; i < codeur1.registre.taille ; i++ ){
 		scanf("%i", &codeur1.registre.tab[i]);
 	}
 	
- 	printf("Saisir la longueur du poynome de generation: ");
+ 	printf("Saisir la longueur du polynome de generation: ");
 	scanf("%i", &codeur1.polynome.taille);
 
 	/* On alloue un espace memoire pour le polynome du premier code LM */
@@ -55,26 +62,16 @@ extern gold_t initialiser_gold(void){
 	for( i = 0 ; i < codeur1.polynome.taille ; i++ )
 		scanf("%i", &codeur1.polynome.tab[i]);
 
+	
 	printf("\tCodeur 2");
 	printf("\n\t========\n");
 	
-	printf("Saisir la longueur du registre: ");
-	do{
-		scanf("%i", &codeur2.registre.taille);
-	}while( codeur2.registre.taille > TAILLE_MAX_REGISTRE );
-	
-	/* On alloue un espace memoire pour le registre du deuxieme code LM */
-	if( ( codeur2.registre.tab = malloc( sizeof(int) * codeur2.registre.taille ) ) == NULL ){
-		printf("Debordement memoire\n");
-		exit(1);
-	}
-
 	printf("Saisir le registre: ");
 	for( i = 0 ; i < codeur2.registre.taille ; i++ ){
 		scanf("%i", &codeur2.registre.tab[i]);
 	}
 	
- 	printf("Saisir la longueur du poynome de generation: ");
+ 	printf("Saisir la longueur du polynome de generation: ");
 	scanf("%i", &codeur2.polynome.taille);
 
 	/* On alloue un espace memoire pour le polynome du deuxieme code LM */

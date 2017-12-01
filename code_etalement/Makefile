@@ -7,7 +7,7 @@
 #-------------
 
 test : test.o emetteur.o recepteur.o
-	gcc -Wall -ansi -g -D_DEBUG_ test.o emetteur.o recepteur.o -o test.exe
+	gcc -Wall -ansi -g -D_DEBUG_ test.o emetteur.o recepteur.o -o test
 
 test.o : test.c
 	gcc -g -c test.c -o test.o

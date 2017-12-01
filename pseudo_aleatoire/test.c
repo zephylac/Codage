@@ -12,10 +12,11 @@ int main(){
 
 	int * res;
 	
-	while(choix < 1 || choix > 2){
+	while(choix < 1 || choix > 3){
 		printf("Veuiller choisir ce que vous voulez faire :\n");
-		printf("Choix 1 : Code longueur maximale\n");
+		printf("Choix 1 : Code a Longueur Maximale\n");
 		printf("Choix 2 : Code de Gold\n");
+		printf("Choix 3 : Code JPL\n");
 		printf("Choix : ");
 		scanf("%i",&choix);
 	}

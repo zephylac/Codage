@@ -7,7 +7,7 @@
 #-------------
 
 test : test.o gen_LM.o gold.o jpl.o
-	gcc -Wall -g -D_DEBUG_ test.o gen_LM.o gold.o jpl.o -o test.exe -lm
+	gcc -Wall -g -D_DEBUG_ test.o gen_LM.o gold.o jpl.o -o test -lm
 
 test.o : test.c
 	gcc -g -lm -c test.c -o test.o
