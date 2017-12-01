@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
+#include "agent.h"
 int menuAgent(){
 
 	int choix = 0;
@@ -25,21 +22,28 @@ int menuAgent(){
 int menuFonction(){
 
 	int choix = 0;
-	while(choix < 1 || choix > 8){
+	while(choix < 1 || choix > 5){
 		printf("Veuiller choisir ce que vous voulez faire :\n");
-		printf("Choix 1 : \n");
-		printf("Choix 2 : \n");
-		printf("Choix 3 : \n");
-		printf("Choix 4 : \n");
-		printf("Choix 5 : \n");
-		printf("Choix 6 : \n");
-		printf("Choix 7 : \n");
-		printf("Choix 8 : \n");
+		printf("Choix 1 : emetteur\n");
+		printf("Choix 2 : recepteur\n");
+		printf("Choix 3 : Code a Longueur Maximale\n");
+		printf("Choix 4 : Code de Gold\n");
+		printf("Choix 5 : Code JPL\n");
 		
 		scanf("%i",&choix);
 	}
 	return choix;
 }
+
+int printAgent(int tabAgent[MAX_AGENT]){
+	int i;
+	
+	for( i = 0; i < MAX_AGENT; i++){
+		printf(" Agent ID | PID processus\n");
+		printf("    %i    |      %i      \n",i,tabAgent[i]);
+	}
+}
+
 
 int addAgent(int tabAgent[MAX_AGENT], int pid){
 	int i = 0;	
@@ -52,13 +56,13 @@ int addAgent(int tabAgent[MAX_AGENT], int pid){
 	}
 	else{
 		tabAgent[i] = pid;
-		printf("Un nouvel agent a ete cree, ID : %i | PID : %i\n",i,pid
+		printf("Un nouvel agent a ete cree, ID : %i | PID : %i\n",i,pid);
 		exit(0);
 	}
 }
 
 int removeAgent(int tabAgent[MAX_AGENT], int id){
-	tabAgent[i] = 0;
+	tabAgent[id] = 0;
 	printf("L'agent %i a ete supprime\n",id);
 }
 
@@ -68,7 +72,7 @@ int chooseAgent(int tabAgent[MAX_AGENT]){
 	printAgent(tabAgent);
 	while(id < 0 || id > MAX_AGENT || tabAgent[id] == 0){
 		printf("ERROR : invalid id\n");
-		scanf("%i",id);
+		scanf("%i",&id);
 	}
 	return id;
 }
@@ -79,15 +83,6 @@ int retrieveAgentPID(int tabAgent[MAX_AGENT], int id){
 }
 
 
-
-int printAgent(int tabAgent[MAX_AGENT]){
-	int i;
-	
-	for( i = 0; i < MAX_AGENT; i++){
-		printf(" Agent ID | PID processus\n");
-		printf("    %i    |      %i      \n",i,tabAgent[i]);
-	}
-}
 
 
 
@@ -120,9 +115,9 @@ int main(void){
 
 					default : 
 						kill(pid, SIGSTOP);
-						createAgent(tabAgent,pid);
+						addAgent(tabAgent,pid);
 						break;
-
+				}
 			case 2:
 				/* Invoke Agent  */
 				printAgent(tabAgent);
@@ -134,18 +129,29 @@ int main(void){
 				kill(pid, SIGCONT);
 				break;
 			case 3:
-				/* SIGKILL */
+				/* Destroy */
 				printAgent(tabAgent);
 				
 				agent = chooseAgent(tabAgent);			
 				
 				pid = retrieveAgentPID(tabAgent, agent);
 
-				kill(pid, SIGQUITTER);
+				kill(pid, SIGKILL);
 
 				break;
 			case 4:
-				/* Suspend */
+				/* Quit */
+				printAgent(tabAgent);
+				
+				agent = chooseAgent(tabAgent);			
+				
+				pid = retrieveAgentPID(tabAgent, agent);
+
+				kill(pid, SIGKILL);
+
+				break;
+			case 5:
+				/* Suspend SIGSTOP */
 				printAgent(tabAgent);
 				
 				agent = chooseAgent(tabAgent);			
@@ -154,35 +160,40 @@ int main(void){
 
 				kill(pid, SIGSTOP);
 
-
-				break;
-			case 5:
-				/* Suspend SIGSTOP */
 				break;
 			case 6:
 				/* Resume SIGCONT */
+				printAgent(tabAgent);
+				
+				agent = chooseAgent(tabAgent);			
+				
+				pid = retrieveAgentPID(tabAgent, agent);
+
+				kill(pid, SIGCONT);
+
 				break;
 			case 7:
 				/* Wait SIGSTOP */
+				printAgent(tabAgent);
+				
+				agent = chooseAgent(tabAgent);			
+				
+				pid = retrieveAgentPID(tabAgent, agent);
+
+				kill(pid, SIGSTOP);
+
 				break;
 			case 8:
 				/* Wake up SIGCONT */
+				printAgent(tabAgent);
+				
+				agent = chooseAgent(tabAgent);			
+				
+				pid = retrieveAgentPID(tabAgent, agent);
+
+				kill(pid, SIGCONT);
+
 				break;
-	
-
-    if (pthread_create(&thread1, NULL, thread_1, NULL)) {
-	    perror("pthread_create");
-	    return EXIT_FAILURE;
-    }
-
-
-    if (pthread_join(thread1, NULL)) {
-	    perror("pthread_join");
-	    return EXIT_FAILURE;
-    }
-
-
-    printf("Après la création du thread.\n");
-	  return EXIT_SUCCESS;
-
+		}
+		exit(0);
 }
