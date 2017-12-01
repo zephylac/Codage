@@ -1,5 +1,12 @@
 #include "gold.h"
 
+/* Fonction permettant d'initialiser une structure du type gold_t
+ * Cette structure permet de generer un code de Gold
+ * Soit deux code LM ayant la meme longueur de sequence a generer
+ * La fonction retourne une structure de type gold_t
+ * @param :
+ *      void
+ */
 extern gold_t initialiser_gold(void){
 	gold_t codeur;	
 
@@ -7,7 +14,10 @@ extern gold_t initialiser_gold(void){
   lm_t codeur2;
    
   int tmp = 0, i = 0;
-    
+   
+ /* On ne saisit la longueur de la sequence a generer qu'une fois car
+  * c'est obligatoirement la meme pour les deux code LM
+  */ 
 	printf("\nSaisir la longueur de la sequence a generer: ");
 	scanf("%i", &codeur1.taille);
 	codeur2.taille = codeur1.taille;	
@@ -21,6 +31,7 @@ extern gold_t initialiser_gold(void){
 		scanf("%i", &codeur1.registre.taille);
 	}while( codeur1.registre.taille > TAILLE_MAX_REGISTRE );
 	
+	/* On alloue un espace memoire pour le registre du premier code LM */
 	if( ( codeur1.registre.tab = malloc( sizeof(int) * codeur1.registre.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
@@ -34,6 +45,7 @@ extern gold_t initialiser_gold(void){
  	printf("Saisir la longueur du poynome de generation: ");
 	scanf("%i", &codeur1.polynome.taille);
 
+	/* On alloue un espace memoire pour le polynome du premier code LM */
 	if( ( codeur1.polynome.tab = malloc( sizeof(int) * codeur1.polynome.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
@@ -51,6 +63,7 @@ extern gold_t initialiser_gold(void){
 		scanf("%i", &codeur2.registre.taille);
 	}while( codeur2.registre.taille > TAILLE_MAX_REGISTRE );
 	
+	/* On alloue un espace memoire pour le registre du deuxieme code LM */
 	if( ( codeur2.registre.tab = malloc( sizeof(int) * codeur2.registre.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
@@ -64,6 +77,7 @@ extern gold_t initialiser_gold(void){
  	printf("Saisir la longueur du poynome de generation: ");
 	scanf("%i", &codeur2.polynome.taille);
 
+	/* On alloue un espace memoire pour le polynome du deuxieme code LM */
 	if( ( codeur2.polynome.tab = malloc( sizeof(int) * codeur2.polynome.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
@@ -79,10 +93,16 @@ extern gold_t initialiser_gold(void){
 	return codeur;
 }
 
+/* Fonction qui prend en parametre une structure gold_t
+ * et qui retourne la sequence genere a partir de ce codeur
+ * @param
+ *      gold_t codeur : structure contenant les paramètres pour generer la sequence
+ */
 extern int * codeur_gold(gold_t gold){
 
 	int * res, * temp1, * temp2, i;
 
+	/* On alloue un espace memoire pour le resultat */
 	if ( (res = malloc(sizeof(int) * gold.codeur1.taille ) ) == NULL ){
 		printf("Debordement memoire\n");
 		exit(1);
@@ -92,6 +112,7 @@ extern int * codeur_gold(gold_t gold){
 	temp1 = codeur(gold.codeur1);
 	temp2 = codeur(gold.codeur2);
 
+	/* On effectue un OU exclusif sur les deux code LM */
 	for(i = 0; i < gold.codeur1.taille; i++){
 		res[i] = temp1[i] ^ temp2[i];
 	} 
@@ -99,34 +120,13 @@ extern int * codeur_gold(gold_t gold){
 	return  res;
 }
 
-
+/* Fonction permettant de liberer l'espace alloue en memoire pour la structure gold_t
+ * @param
+ *      lm_t codeur : la structure que l'on veux detruire
+ */
 extern int detruire_gold(gold_t gold){
+	/* On detruit le premier code LM */
 	detruire_lm(gold.codeur1);
+	/* On detruit le deuxieme code LM */
 	detruire_lm(gold.codeur2);
 }	
-
-
-
-/*extern void print_codeur_gold( gold_t codeur ){
-	int i, taille_pol, taille;
-  
-  taille = codeur.taille;
-  taille_pol = codeur.polynome.taille;
-  
-  printf("\nLongueur de la sequence: %i\nPolynome: [ ", taille);
-  //Affichage du polynome
-  for( i = 0 ; i < taille_pol ; i++ ){
-		printf("%i", codeur.polynome.tab[i]);
-		if( i != taille_pol -1 )
-			printf(",");
-	}
-	printf(" ]");
-  
-  //Affichage du registre
-  printf("\nRegistre: ");
-	for( i = 0 ; i < codeur.registre.taille ; i++ )
-		printf("%i ", codeur.registre.tab[i]);
-}*/
-
-
-
