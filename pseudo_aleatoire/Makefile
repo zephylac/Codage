@@ -32,5 +32,6 @@ jpl.o : jpl.c jpl.h
 all : test
 
 clean :
-	rm *.o *.exe
+	rm *.o
+	rm test
 
