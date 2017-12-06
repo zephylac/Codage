@@ -31,4 +31,5 @@ recepteur.o : recepteur.c recepteur.h
 all : test
 
 clean :
-	rm *.o *.exe
+	rm *.o
+	rm test

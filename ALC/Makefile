@@ -7,7 +7,7 @@
 #-------------
 
 agent : agent.c 
-	gcc -pthread -Wall -g agent.c -o test.exe
+	gcc -pthread -Wall -g agent.c -o test
 
 #----------------------------
 # Gestion generale du projet
@@ -16,5 +16,6 @@ agent : agent.c
 all : agent
 
 clean :
-	rm *.o *.exe
+	rm *.o
+	rm test
 
